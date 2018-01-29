@@ -1,6 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload:preload, create:create, update:update});
 var score = 0;
-var life = 0;
+var life = 3;
 
 function preload(){
   game.load.image('sky', 'assets/sky.png');
@@ -107,14 +107,14 @@ function update(){
 	}
 
 	//Lesson 9:
-
 	game.physics.arcade.overlap(player, stars, collectStar, null, this);
 	game.physics.arcade.overlap(player, enemy1, loseLife, null, this);
+
+	moveEnemy();
 
 	if(life < 0){
 		endGame();
 	}
-
 }
 
 
@@ -143,9 +143,20 @@ function loseLife(player, enemy){
 	enemy.reset(760, 20);
 }
 
+function moveEnemy(){
+	//Enemy AI
+	if(enemy1.x > 759){
+		enemy1.animations.play('left');
+		enemy1.body.velocity.x = -120;
+	}else if(enemy1.x < 405){
+		enemy1.animations.play('right');
+		enemy1.body.velocity.x = 120;
+	}
+}
+
 function endGame(){
   player.kill();
-  scorelabel.text="GAME OVER! \n You scored " + score;
+  scorelabel.text="GAME OVER! You scored " + score;
   scoretext.visible = false;
   lifelabel.visible = false;
   lifetext.visible = false;
