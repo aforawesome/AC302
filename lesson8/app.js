@@ -39,9 +39,56 @@ function create(){
 	scorelabel.setTextBounds(0,520,800,100);
 	scoretext.setTextBounds(0,520,800,100);
 
+	//Lesson 8:
+
+	// Create the stars
+	stars = game.add.physicsGroup();
+	stars.enableBody = true;
+	// We will create 12 stars evenly spaced
+	for(var i = 0; i < 12; i++){
+		var star = stars.create(i * 70, 0, 'star');
+		star.body.gravity.y = 200;
+		star.body.bounce.y = 0.7 + Math.random() * 0.2;
+	}
+
+	// Creating the player sprite
+	player = game.add.sprite(32, 400, 'dude');
+		// Animating the player sprite
+		player.animations.add('left', [0, 1, 2, 3], 10, true);
+		player.animations.add('right', [5, 6, 7, 8], 10, true);
+		game.physics.arcade.enable(player);
+		player.body.bounce.y = 0.2;
+		player.body.gravity.y = 300;
+		player.body.collideWorldBounds = true;
+
+	// Create keyboard entries
+	cursors = game.input.keyboard.createCursorKeys();
 
 }
 
 function update(){
+	game.physics.arcade.collide(player, platforms);
+
+	//reset the player's velocity if no events.
+	player.body.velocity.x = 0;
+
+	//player movement by keys
+	if(cursors.left.isDown){
+		//move left
+		player.body.velocity.x = -150;
+		player.animations.play('left');
+	} else if(cursors.right.isDown){
+		//move right
+		player.body.velocity.x = 150;
+		player.animations.play('right');
+	} else {
+		player.animations.stop();
+		player.frame = 4;
+	}
+
+	//allow the player to jump if touching the ground
+	if(cursors.up.isDown && player.body.touching.down){
+		player.body.velocity.y = -300;
+	}
 
 }
