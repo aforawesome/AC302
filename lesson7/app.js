@@ -30,8 +30,8 @@ function create(){
 	//set text style
 	var style = {font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle"};
 	//positioning the score
-	scorelabel = game.add.text(350,750, "Your score is: ", style);
-	scoretext = game.add.text(350, 750, score,style);
+	scorelabel = game.add.text(350,500, "Your score is: ", style);
+	scoretext = game.add.text(350, 500, score,style);
 	scorelabel.setShadow(3,3,'rgba(0,0,0,0.5)',2);
 	scoretext.setShadow(3,3,'rgba(0,0,0,0.5)',2);
 
