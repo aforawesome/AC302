@@ -1,5 +1,6 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {preload:preload, create:create, update:update});
 var score = 0;
+var life = 0;
 
 function preload(){
   game.load.image('sky', 'assets/sky.png');
@@ -35,9 +36,11 @@ function create(){
 	scorelabel.setShadow(3,3,'rgba(0,0,0,0.5)',2);
 	scoretext.setShadow(3,3,'rgba(0,0,0,0.5)',2);
 
-	//set the text bounds x0, y520, x800, y100
-	// scorelabel.setTextBounds(0,520,800,100);
-	// scoretext.setTextBounds(0,520,800,100);
+	//positioning the lives
+	lifelabel = game.add.text(10,5, "Lives: ", style);
+	lifetext = game.add.text(120,5, life,style);
+	lifelabel.setShadow(3,3,'rgba(0,0,0,0.5)',2);
+	lifetext.setShadow(3,3,'rgba(0,0,0,0.5)',2);
 
 
 }

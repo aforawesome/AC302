@@ -106,4 +106,47 @@ function update(){
 		player.body.velocity.y = -300;
 	}
 
+	//Lesson 9:
+
+	game.physics.arcade.overlap(player, stars, collectStar, null, this);
+	game.physics.arcade.overlap(player, enemy1, loseLife, null, this);
+
+	if(life < 0){
+		endGame();
+	}
+
+}
+
+
+//define collectStar function
+function collectStar(player,star){
+	//remove the star
+	star.kill();
+	//update score variable
+	score =score +1;
+	//reflect in text
+	scoretext.setText(score);
+
+	//create new star
+	star = stars.create(Math.floor(Math.random()*750),0,'star');
+	star.body.gravity.y = 200;
+	star.body.bounce.y = 0.7 + Math.random() * 0.2;
+}
+
+//define loseLife
+function loseLife(player, enemy){
+	//lose life
+	life -= 1;
+	lifetext.setText(life);
+
+	enemy.kill();
+	enemy.reset(760, 20);
+}
+
+function endGame(){
+  player.kill();
+  scorelabel.text="GAME OVER! \n You scored " + score;
+  scoretext.visible = false;
+  lifelabel.visible = false;
+  lifetext.visible = false;
 }
