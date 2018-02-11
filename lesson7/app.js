@@ -25,11 +25,11 @@ function create(){
 	// Create the ledges
 	var ledge = platforms.create(400, 400, 'ground');
 	ledge.body.immovable = true;
-	ledge = platforms.create(-150, 250, 'ground');
+	ledge = platforms.create(-100, 250, 'ground');
 	ledge.body.immovable = true;
 
 	//set text style
-	var style = {font: "bold 32px Arial", fill: "#fff"}//, boundsAlignH: "center", boundsAlignV: "middle"};
+	var style = {font: "bold 32px Arial", fill: "#fff"}
 	//positioning the score
 	scorelabel = game.add.text(300,560, "Score: ", style);
 	scoretext = game.add.text(420, 560, score,style);

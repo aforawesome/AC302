@@ -8,6 +8,9 @@ function preload(){
   game.load.image('star', 'assets/star.png');
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
+
+  //V2 - load health packs
+  game.load.image('health','assets/firstaid.png');
 }
 
 function create(){
@@ -73,16 +76,50 @@ function create(){
     	enemy1.body.bounce.y = 0.2;
     	enemy1.body.gravity.y = 500;
     	enemy1.body.collideWorldBounds = true;
+    enemy2 = game.add.sprite(10, 20, 'baddie');
+    // Animate the enemy2
+    	enemy2.animations.add('left', [0,1], 10, true);
+    	enemy2.animations.add('right', [2,3], 10, true);
+    	game.physics.arcade.enable(enemy2);
+    	enemy2.body.bounce.y = 0.2;
+    	enemy2.body.gravity.y = 500;
+    	enemy2.body.collideWorldBounds = true;
+
+  	enemy3 = game.add.sprite(200, 20, 'baddie');
+    // Animate the enemy3
+    	enemy3.animations.add('left', [0,1], 10, true);
+    	enemy3.animations.add('right', [2,3], 10, true);
+    	game.physics.arcade.enable(enemy3);
+    	enemy3.body.bounce.y = 0.2;
+    	enemy3.body.gravity.y = 500;
+    	enemy3.body.collideWorldBounds = true;
 
 	// Create keyboard entries
 	cursors = game.input.keyboard.createCursorKeys();
 
+	//V2 - add enter key as an input
+	enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
+	//V2 - create health pack group
+  	healths = game.add.physicsGroup();
+  	healths.enableBody = true;
+
+  	//V2 - game over text
+  	goText = game.add.text(0,0,'',style);
+  	goText.setShadow(3,3,'rgba(0,0,0,0.5)',2);
+  	goText.setTextBounds(100,200,800,100);
+  	goText.visible = false;
 }
 
 function update(){
 	game.physics.arcade.collide(player, platforms);
 	game.physics.arcade.collide(stars, platforms);
 	game.physics.arcade.collide(enemy1, platforms);
+	game.physics.arcade.collide(enemy2, platforms);
+	game.physics.arcade.collide(enemy3, platforms);
+
+	//V2 - collide with health pack
+	game.physics.arcade.collide(healths, platforms);
 
 	//reset the player's velocity if no events.
 	player.body.velocity.x = 0;
@@ -109,6 +146,11 @@ function update(){
 	//Lesson 9:
 	game.physics.arcade.overlap(player, stars, collectStar, null, this);
 	game.physics.arcade.overlap(player, enemy1, loseLife, null, this);
+	game.physics.arcade.overlap(player, enemy2, loseLife, null, this);
+	game.physics.arcade.overlap(player, enemy3, loseLife, null, this);
+
+	//V2 - collect helthpacks
+	game.physics.arcade.overlap(player, healths, collectHealth,null,this);
 
 	moveEnemy();
 
@@ -131,6 +173,13 @@ function collectStar(player,star){
 	star = stars.create(Math.floor(Math.random()*750),0,'star');
 	star.body.gravity.y = 200;
 	star.body.bounce.y = 0.7 + Math.random() * 0.2;
+
+	//V2 - create health pack if collected multiple of 10
+  	if(score % 10 == 0){
+    	health = healths.create(Math.floor(Math.random()*750),0,'health');
+    	health.body.gravity.y = 200;
+    	health.body.bounce.y = 0.2;
+  	}
 }
 
 //define loseLife
@@ -152,12 +201,64 @@ function moveEnemy(){
 		enemy1.animations.play('right');
 		enemy1.body.velocity.x = 120;
 	}
+	if(enemy2.x > 200){
+		enemy2.animations.play('left');
+		enemy2.body.velocity.x = -120;
+	}else if(enemy2.x < 21){
+		enemy2.animations.play('right');
+		enemy2.body.velocity.x = 120;
+	}
+	if(enemy3.x > 759){
+		enemy3.animations.play('left');
+		enemy3.body.velocity.x = -120;
+	}else if(enemy3.x < 201){
+		enemy3.animations.play('right');
+		enemy3.body.velocity.x = 120;
+	}
 }
 
 function endGame(){
   player.kill();
-  scorelabel.text="GAME OVER! You scored " + score;
+  //scorelabel.text="GAME OVER! You scored " + score;
   scoretext.visible = false;
   lifelabel.visible = false;
   lifetext.visible = false;
+
+  //V2 - game over text and restart key
+  scorelabel.visible = false;
+  goText.text = "GAME OVER! \n You scored " + score + "\n Press Enter to try again...";
+  goText.visible = true;
+
+  //add single keydown event to restart game
+  enterKey.onDown.addOnce(restartGame);
 }
+
+//V2 - define collectHealth
+function collectHealth(player,health){
+  life += 1;
+  lifetext.setText(life);
+  health.kill();
+}
+
+//V2 - restarts the game
+function restartGame(){
+	stars.callAll('kill');
+	healths.callAll('kill');
+  	for(var i = 0; i < 12; i++){
+    	var star = stars.create(i * 70, 0, 'star');
+    	star.body.gravity.y = 200;
+    	star.body.bounce.y = 0.7 + Math.random() * 0.2;
+  	}
+  	score = 0;
+  	life = 3;
+  	player.reset(32, 400);
+  	lifetext.setText(life);
+  	scoretext.setText(score);
+  	goText.visible = false;
+  	scorelabel.visible = true;
+  	scoretext.visible = true;
+  	lifelabel.visible = true;
+  	lifetext.visible = true;
+}
+
+
