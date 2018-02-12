@@ -107,8 +107,8 @@ function update(){
 	}
 
 	//Lesson 9:
-	game.physics.arcade.overlap(player, stars, collectStar, null, this);
-	game.physics.arcade.overlap(player, enemy1, loseLife, null, this);
+	game.physics.arcade.overlap(player, stars, collectStar) //, null, this);
+	game.physics.arcade.overlap(player, enemy1, loseLife)   //, null, this);
 
 	moveEnemy();
 

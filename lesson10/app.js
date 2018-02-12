@@ -144,10 +144,10 @@ function update(){
 	}
 
 	//Lesson 9:
-	game.physics.arcade.overlap(player, stars, collectStar, null, this);
-	game.physics.arcade.overlap(player, enemy1, loseLife, null, this);
-	game.physics.arcade.overlap(player, enemy2, loseLife, null, this);
-	game.physics.arcade.overlap(player, enemy3, loseLife, null, this);
+	game.physics.arcade.overlap(player, stars, collectStar) //, null, this);
+	game.physics.arcade.overlap(player, enemy1, loseLife) //, null, this);
+	game.physics.arcade.overlap(player, enemy2, loseLife) //, null, this);
+	game.physics.arcade.overlap(player, enemy3, loseLife) //, null, this);
 
 	//V2 - collect helthpacks
 	game.physics.arcade.overlap(player, healths, collectHealth,null,this);
