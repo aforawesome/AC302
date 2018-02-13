@@ -162,17 +162,14 @@ function update(){
 
 //define collectStar function
 function collectStar(player,star){
-	//remove the star
-	star.kill();
 	//update score variable
 	score =score +1;
 	//reflect in text
 	scoretext.setText(score);
 
-	//create new star
-	star = stars.create(Math.floor(Math.random()*750),0,'star');
-	star.body.gravity.y = 200;
-	star.body.bounce.y = 0.7 + Math.random() * 0.2;
+	//remove the star and reset to the top
+	star.kill();
+	star.reset(Math.floor(Math.random()*750),0)
 
 	//V2 - create health pack if collected multiple of 10
   	if(score % 10 == 0){
