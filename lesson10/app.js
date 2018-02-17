@@ -270,6 +270,9 @@ function restartGame(){
     	star.body.gravity.y = 200;
     	star.body.bounce.y = 0.7 + Math.random() * 0.2;
   	}
+  	var diamond = diamonds.create(Math.floor(Math.random()*750), 0, 'diamond');
+	diamond.body.gravity.y = 200;
+	diamond.body.bounce.y = 0.7 + Math.random() * 0.2;
   	score = 0;
   	life = 3;
   	player.reset(32, 400);
