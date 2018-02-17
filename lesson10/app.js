@@ -9,6 +9,7 @@ function preload(){
   game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
   game.load.spritesheet('baddie', 'assets/baddie.png', 32, 32);
 
+  game.load.image('diamond','assets/diamond.png');
   //V2 - load health packs
   game.load.image('health','assets/firstaid.png');
 }
@@ -97,6 +98,13 @@ function create(){
 	// Create keyboard entries
 	cursors = game.input.keyboard.createCursorKeys();
 
+	//Create diamond bonus sprite
+	diamonds = game.add.physicsGroup();
+  	diamonds.enableBody = true;
+  	var diamond = diamonds.create(Math.floor(Math.random()*750), 0, 'diamond');
+	diamond.body.gravity.y = 200;
+	diamond.body.bounce.y = 0.7 + Math.random() * 0.2; 
+
 	//V2 - add enter key as an input
 	enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
@@ -117,6 +125,9 @@ function update(){
 	game.physics.arcade.collide(enemy1, platforms);
 	game.physics.arcade.collide(enemy2, platforms);
 	game.physics.arcade.collide(enemy3, platforms);
+
+	//diamond sprite collide
+	game.physics.arcade.collide(diamonds, platforms);
 
 	//V2 - collide with health pack
 	game.physics.arcade.collide(healths, platforms);
@@ -144,13 +155,16 @@ function update(){
 	}
 
 	//Lesson 9:
-	game.physics.arcade.overlap(player, stars, collectStar) //, null, this);
-	game.physics.arcade.overlap(player, enemy1, loseLife) //, null, this);
-	game.physics.arcade.overlap(player, enemy2, loseLife) //, null, this);
-	game.physics.arcade.overlap(player, enemy3, loseLife) //, null, this);
+	game.physics.arcade.overlap(player, stars, collectStar); 
+	game.physics.arcade.overlap(player, enemy1, loseLife); 
+	game.physics.arcade.overlap(player, enemy2, loseLife); 
+	game.physics.arcade.overlap(player, enemy3, loseLife); 
+
+	//collect diamonds
+	game.physics.arcade.overlap(player, diamonds, collectDiamond);
 
 	//V2 - collect helthpacks
-	game.physics.arcade.overlap(player, healths, collectHealth,null,this);
+	game.physics.arcade.overlap(player, healths, collectHealth);
 
 	moveEnemy();
 
@@ -228,6 +242,18 @@ function endGame(){
 
   //add single keydown event to restart game
   enterKey.onDown.addOnce(restartGame);
+}
+
+//define collectDiamond
+function collectDiamond(player,diamond){
+  score += 10;
+  scoretext.setText(score);
+  diamond.kill();
+
+  diamond.reset(Math.random()*750,0);
+  health = healths.create(Math.floor(Math.random()*750),0,'health');
+  health.body.gravity.y = 200;
+  health.body.bounce.y = 0.2;
 }
 
 //V2 - define collectHealth
