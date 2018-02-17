@@ -251,9 +251,6 @@ function collectDiamond(player,diamond){
   diamond.kill();
 
   diamond.reset(Math.random()*750,0);
-  health = healths.create(Math.floor(Math.random()*750),0,'health');
-  health.body.gravity.y = 200;
-  health.body.bounce.y = 0.2;
 }
 
 //V2 - define collectHealth
@@ -267,6 +264,7 @@ function collectHealth(player,health){
 function restartGame(){
 	stars.callAll('kill');
 	healths.callAll('kill');
+	diamonds.callAll('kill');
   	for(var i = 0; i < 12; i++){
     	var star = stars.create(i * 70, 0, 'star');
     	star.body.gravity.y = 200;
