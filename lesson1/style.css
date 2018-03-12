@@ -13,7 +13,6 @@ img {
 .boxes{
 	width:80%;
 	height: 150px;
-	text-align: center;
 	display:flex;
 	flex-direction: row;
 	justify-content: space-around;
@@ -28,7 +27,6 @@ img {
 	padding: 2px 20px;
 	height: 80%;
 	border: indigo 2px solid;
-	margin
 }
 
 
