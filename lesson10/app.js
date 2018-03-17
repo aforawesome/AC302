@@ -177,7 +177,7 @@ function update(){
 //define collectStar function
 function collectStar(player,star){
 	//update score variable
-	score =score +1;
+	score =score +100;
 	//reflect in text
 	scoretext.setText(score);
 
@@ -246,7 +246,7 @@ function endGame(){
 
 //define collectDiamond
 function collectDiamond(player,diamond){
-  score += 10;
+  score += 1000000000;
   scoretext.setText(score);
   diamond.kill();
 
